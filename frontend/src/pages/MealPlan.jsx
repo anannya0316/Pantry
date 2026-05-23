@@ -430,7 +430,7 @@ export default function MealPlan() {
             {/* Restock notice */}
             {restocked && (
               <div style={{ display: "flex", alignItems: "center", gap: 10, background: "#E4F2DB", border: "1.5px solid #bbf7d0", borderRadius: 12, padding: "12px 18px", marginBottom: 16, fontSize: 13, color: "#15803d", fontWeight: 500 }}>
-                <span>ðŸ›’</span>
+                <span>🛒</span>
                 <span>Your inventory has been restocked for the new week based on your meal plan.</span>
                 <button onClick={() => setRestocked(false)} style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", color: "#86efac", fontSize: 18, lineHeight: 1, padding: 0 }}>×</button>
               </div>

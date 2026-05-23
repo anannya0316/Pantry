@@ -518,7 +518,7 @@ export default function Signup() {
                       onClick={() => setIsRestockOpen(!isRestockOpen)}
                     >
                       <span className="input-icon">
-                        ðŸ›’
+                        🛒
                       </span>
 
                       {form.grocery_shopping_day}

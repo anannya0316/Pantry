@@ -2,6 +2,8 @@
 
 **An AI-powered kitchen assistant that manages your pantry, plans your meals, and helps you eat better — all through a conversational interface.**
 
+**Live demo: [frontend-pantry.vercel.app](https://frontend-pantry.vercel.app)**
+
 Pantry connects your fridge to a multi-agent AI system. Tell it what you bought, ask it what you can cook tonight, log what you ate, and let it keep track of the rest — expiry dates, low stock, nutrition, weekly restocks.
 
 ---

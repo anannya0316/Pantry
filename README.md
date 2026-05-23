@@ -162,13 +162,22 @@ The frontend runs on `http://localhost:5173` and proxies API calls to `http://lo
 
 ### Environment Variables
 
+**Backend (`backend/.env`)**
+
 | Variable | Description |
 |----------|-------------|
-| `MONGO_URI` | MongoDB connection string |
-| `OPEN_ROUTER_KEY` | OpenRouter API key (used for both agent and utility LLM calls) |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
+| `MONGO_URI` | MongoDB Atlas connection string |
+| `OPEN_ROUTER_KEY` | OpenRouter API key (agent + all utility LLM calls) |
 | `TAVILY_API_KEY` | Tavily search API key (optional — fallback for classification) |
-| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS` | SMTP config for verification emails |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `FROM_EMAIL` | SMTP config for verification emails |
+| `FRONTEND_BASE_URL` | Frontend URL — used in email verification links |
+
+**Frontend (`frontend/.env`)**
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_URL` | Backend URL (falls back to `http://localhost:8000` locally) |
+| `VITE_GOOGLE_CLIENT_ID` | Google OAuth client ID |
 
 ---
 
@@ -190,37 +199,35 @@ All authenticated endpoints read the user identity from a `user-id` request head
 
 ## Deployment
 
-The frontend and backend are deployed separately. The backend needs a persistent process (for in-memory conversation history and background tasks), so it can't run as Vercel serverless functions.
+Both frontend and backend are deployed on Vercel as separate projects. The agent is stateless — conversation history is owned by the client and sent with each request, so there's no server-side session state.
 
-| Part | Platform | Free URL |
-|------|----------|----------|
+| Part | Platform | URL |
+|------|----------|-----|
 | Frontend | [Vercel](https://vercel.com) | `your-app.vercel.app` |
-| Backend | [Railway](https://railway.app) | `your-app.up.railway.app` |
+| Backend | [Vercel](https://vercel.com) | `your-backend.vercel.app` |
 | Database | [MongoDB Atlas](https://www.mongodb.com/atlas) M0 | connection string only |
 
-### Deploy the backend (Railway)
+### Deploy the backend
 
 1. Push your repo to GitHub
-2. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub repo
-3. Select the repo, set **Root Directory** to `backend`
-4. Railway auto-detects Python and uses the `Procfile` — no extra config needed
-5. Add environment variables from `backend/.env.example` under **Variables**
-6. Copy the generated `*.up.railway.app` URL
+2. Go to [vercel.com](https://vercel.com) → New Project → import your repo
+3. Click the **backend** service card, set **Root Directory** to `backend`
+4. Add environment variables from `backend/.env.example`
+5. Deploy — copy the generated URL
 
-### Deploy the frontend (Vercel)
+### Deploy the frontend
 
-1. Go to [vercel.com](https://vercel.com) → New Project → import the same repo
-2. Set **Root Directory** to `frontend`
-3. Framework preset: **Vite**
-4. Add environment variables:
-   - `VITE_API_URL` → your Railway backend URL (e.g. `https://pantry.up.railway.app`)
+1. New Project → import the same repo → click the **frontend** service card
+2. Root Directory: `frontend`
+3. Add environment variables:
+   - `VITE_API_URL` → your backend Vercel URL
    - `VITE_GOOGLE_CLIENT_ID` → your Google OAuth client ID
-5. Deploy — Vercel gives you `your-app.vercel.app` for free
+4. Deploy → get the frontend URL
+5. Go back to the backend project → add `FRONTEND_BASE_URL` = your frontend URL → redeploy
 
 ### After deploying
 
-- **Google OAuth**: add your Vercel URL (`https://your-app.vercel.app`) to the list of Authorised JavaScript origins in [Google Cloud Console](https://console.cloud.google.com) → APIs & Services → Credentials
-- **CORS**: the backend currently allows all origins (`*`). For production you can tighten this to your Vercel URL in `backend/api/middleware.py`
+- **Google OAuth**: add your frontend URL to **Authorised JavaScript origins** in [Google Cloud Console](https://console.cloud.google.com) → APIs & Services → Credentials
 
 ---
 

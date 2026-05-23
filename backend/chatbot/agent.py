@@ -9,7 +9,6 @@ from langchain_core.tools import tool
 from pydantic import BaseModel
 from langgraph.prebuilt import create_react_agent
 from langgraph.graph import StateGraph, END, MessagesState
-from langgraph.checkpoint.memory import MemorySaver
 
 from utils.text_utils import clean_markdown
 import chatbot.tools.inventory as _inv
@@ -23,7 +22,6 @@ from chatbot.tools.meal_plan import AddMealPlanItemInput, UpdateMealPlanItemInpu
 from chatbot.tools.profile import UpdateProfileInput
 from chatbot.tools.nutrition import LogRecipeInput, GetNutritionLogByMealInput
 from chatbot.tools.shopping import GetShoppingListInput
-_memory = MemorySaver()
 _today = datetime.now().strftime("%A, %Y-%m-%d")
 
 
@@ -342,7 +340,7 @@ Today is {_today}.
     for node in ("inventory", "meal_plan", "profile", "nutrition_log", "recipe", "shopping_list"):
         graph.add_edge(node, END)
 
-    return graph.compile(checkpointer=_memory)
+    return graph.compile()
 
 
 # ── Debug data extraction ─────────────────────────────────────────────────────
@@ -382,13 +380,20 @@ def run_agent(
 ):
     """Invoke the LangGraph supervisor agent and return a response."""
     app = _build_app(user_id)
-    thread_id = chat_id or f"user-{user_id}"
-    config = {"configurable": {"thread_id": thread_id}}
 
-    prev_state = app.get_state(config)
-    prev_count = len(prev_state.values.get("messages", [])) if prev_state and prev_state.values else 0
+    messages = []
+    for msg in (history or []):
+        role = msg.get("role")
+        content = msg.get("content", "")
+        if role == "user":
+            messages.append(("user", content))
+        elif role == "assistant":
+            messages.append(("assistant", content))
 
-    result = app.invoke({"messages": [("user", user_message)]}, config=config)
+    prev_count = len(messages)
+    messages.append(("user", user_message))
+
+    result = app.invoke({"messages": messages})
 
     all_messages = result.get("messages", [])
     called_tools, recipes, last_success = _extract_debug_data(all_messages, prev_count)

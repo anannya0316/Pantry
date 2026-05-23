@@ -4,7 +4,7 @@ import axios from "axios"
 import { getProfile } from "../services/api"
 import NotificationsDropdown from "../components/NotificationsDropdown"
 
-const BASE_URL = "http://localhost:8000"
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 // --- Icons ---
 const LeafIcon = ({ size = 18, color = "#2E7D32" }) => (

@@ -49,11 +49,19 @@ def complete_onboarding(
 
     inventory_items = []
 
+    pre = data.classified_items or {}
+
     for item_name in data.household_items:
-        classified = classify_item(
-            item_name,
-            household_size
-        )
+        if item_name in pre:
+            c = pre[item_name]
+            classified = {
+                "display_name": c.display_name,
+                "category": c.category,
+                "quantity": c.quantity,
+                "unit": c.unit,
+            }
+        else:
+            classified = classify_item(item_name, household_size)
 
         input_name = item_name.strip().lower()
 

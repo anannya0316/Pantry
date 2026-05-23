@@ -1,10 +1,16 @@
 from fastapi import APIRouter, BackgroundTasks, Header
 
-from models.onboarding_models import OnboardingRequest
+from models.onboarding_models import ClassifyItemRequest, OnboardingRequest
+from services.classification_service import classify_item
 from services.onboarding_service import complete_onboarding
 
 
 router = APIRouter()
+
+
+@router.post("/classify-item")
+def classify_item_route(data: ClassifyItemRequest):
+    return classify_item(data.item_name, data.household_size)
 
 
 @router.post("/complete-onboarding")

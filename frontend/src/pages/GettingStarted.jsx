@@ -82,6 +82,8 @@ const goalsList = [
   { icon: "/noun-weight-check-3039725.svg",  name: "Lose weight",   desc: "Discover balanced meals and portion control tips.",      color: "#f3e5f5" },
 ];
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 export default function GettingStarted() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -89,6 +91,7 @@ export default function GettingStarted() {
   const [selectedGoals, setSelectedGoals] = useState([]);
   const [preference, setPreference] = useState("veg");
   const [saving, setSaving] = useState(false);
+  const [classifiedItems, setClassifiedItems] = useState({});
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -103,6 +106,11 @@ export default function GettingStarted() {
       setSelectedFoods(selectedFoods.filter(f => f !== name));
     } else if (selectedFoods.length < 5) {
       setSelectedFoods([...selectedFoods, name]);
+      if (!classifiedItems[name]) {
+        axios.post(`${API_URL}/onboarding/classify-item`, { item_name: name })
+          .then(res => setClassifiedItems(prev => ({ ...prev, [name]: res.data })))
+          .catch(() => {});
+      }
     }
   };
 
@@ -117,8 +125,8 @@ export default function GettingStarted() {
     try {
       const userId = localStorage.getItem("userId");
       await axios.post(
-        `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/auth/complete-onboarding`,
-        { household_items: selectedFoods, goals: selectedGoals },
+        `${API_URL}/auth/complete-onboarding`,
+        { household_items: selectedFoods, goals: selectedGoals, classified_items: classifiedItems },
         { headers: { "user-id": userId } }
       );
 navigate("/dashboard");

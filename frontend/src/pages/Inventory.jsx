@@ -685,7 +685,7 @@ export default function Inventory() {
                     <CategoryIcon category={item.category} size={40} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 15, fontWeight: 700, color: "#0d1a0d", marginBottom: 3 }}>{item.display_name}</div>
-                      <div style={{ fontSize: 12, color: "#9ca3af" }}>{item.quantity} {item.unit} Â· <span style={{ color: cs.color }}>{item.category}</span></div>
+                      <div style={{ fontSize: 12, color: "#9ca3af" }}>{item.quantity} {item.unit} · <span style={{ color: cs.color }}>{item.category}</span></div>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 5 }}>
                       <span style={{ fontSize: 12, color: "#9ca3af" }}>{formatDate(item.purchase_date)}</span>

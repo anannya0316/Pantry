@@ -1,0 +1,14 @@
+How many days does "{item_name}" stay fresh for a typical home cook after purchase?
+
+Rules:
+- Give the CONSERVATIVE, real-world estimate — not the theoretical maximum.
+- For dairy, meat, and most produce: assume already opened / in active use, stored in fridge.
+- For dry goods (pasta, rice, nuts, dried beans): assume open package in pantry.
+- Use the point at which quality NOTICEABLY DECLINES, not when it becomes unsafe.
+
+Calibration examples (use these as a reference scale):
+milk=3, berries=3, bread=4
+
+Respond with ONLY a single integer.
+No units.
+No explanation.

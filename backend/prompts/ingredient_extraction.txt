@@ -1,0 +1,27 @@
+List the main ingredients needed to make "{meal_name}" for {household_size} people.
+{web_context}
+User preferences:
+{pref_str}
+
+Strictly respect all preferences — especially allergies and dietary restrictions.
+Avoid disliked ingredients. Favour liked ingredients where they fit naturally.
+This is specifically for Indian households so keep quantities and ingredients realistic.
+
+Rules:
+- Use raw ingredient names only
+- Never include cooking states like:
+  boiled, fried, cooked, roasted, grilled, chopped, sliced, minced, etc.
+- Return realistic quantities for {household_size} people
+- unit must be one of:
+  unit, kg, g, liter, ml, pieces, lbs, loaf
+
+Respond ONLY with a valid JSON array.
+
+Example:
+[
+  {{
+    "name": "carrot",
+    "quantity": 200,
+    "unit": "g"
+  }}
+]

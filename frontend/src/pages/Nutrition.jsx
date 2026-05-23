@@ -6,7 +6,7 @@ import NotificationsDropdown from "../components/NotificationsDropdown"
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 const FONT = "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
 
-// â”€â”€ Nav icons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Nav icons ─────────────────────────────────────────────────────────────────
 const LeafIcon = ({ size = 18, color = "#2E7D32" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
@@ -60,7 +60,7 @@ const PersonIcon = ({ color }) => (
   </svg>
 )
 
-// â”€â”€ Card metric icons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Card metric icons ─────────────────────────────────────────────────────────
 const IconDrop = ({ color, size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
@@ -134,7 +134,7 @@ function getWeekRange() {
   return `${fmt(monday)} â€“ ${fmt(sunday)}, ${sunday.getFullYear()}`
 }
 
-// â”€â”€ Charts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Charts ────────────────────────────────────────────────────────────────────
 
 function DonutChart({ segments, size = 160, stroke = 28 }) {
   const cx = size / 2, cy = size / 2
@@ -238,7 +238,7 @@ function NutrientBarChart({ data, height = 200 }) {
   )
 }
 
-// â”€â”€ UI components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── UI components ─────────────────────────────────────────────────────────────
 
 const SUB_COLORS = { green: "#206C1B", yellow: "#b45309", red: "#dc2626", grey: "#9ca3af" }
 
@@ -255,12 +255,12 @@ function StatCard({ iconBg, iconColor, Icon, label, value, sub, subGreen, subCol
           <span style={{ fontSize: 14, fontWeight: 600, color: "#374151", fontFamily: FONT }}>{label}</span>
           {badge != null && (
             <span style={{ fontSize: 11.5, fontWeight: 600, color: badgeUp ? "#206C1B" : "#dc2626", fontFamily: FONT }}>
-              {badgeUp ? "â†—" : "â†˜"} {badge}
+              {badgeUp ? "↗" : "↘"} {badge}
             </span>
           )}
         </div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 6, fontFamily: FONT }}>
-          <span style={{ fontSize: 28, fontWeight: 800, color: "#0d1a0d", lineHeight: 1 }}>{value ?? "â€”"}</span>
+          <span style={{ fontSize: 28, fontWeight: 800, color: "#0d1a0d", lineHeight: 1 }}>{value ?? "—"}</span>
           {sub && <span style={{ fontSize: 13, color: resolvedColor, fontWeight: isBold ? 600 : 400 }}>{sub}</span>}
         </div>
       </div>
@@ -302,7 +302,7 @@ function Stars({ count = 4, max = 5 }) {
   )
 }
 
-// â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function Nutrition() {
   const navigate = useNavigate()
@@ -361,7 +361,7 @@ export default function Nutrition() {
             <span style={{ fontSize: 17, fontWeight: 700, color: "#1a2e1a" }}>Pantry</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1.5px solid #c6deb0", borderRadius: 999, padding: "5px 14px", fontSize: 13, color: "#206c1b", fontWeight: 500 }}>
-            <span style={{ fontSize: 11 }}>âœ¦</span> Your personalized kitchen assistant
+            <span style={{ fontSize: 11 }}>✦</span> Your personalized kitchen assistant
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -370,7 +370,7 @@ export default function Nutrition() {
             <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <UserIcon />
             </div>
-            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "â€”"}</span>
+            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "—"}</span>
           </div>
           <button onClick={() => { localStorage.removeItem("userId"); localStorage.removeItem("token"); navigate("/login") }} style={{ background: "none", border: "1.5px solid #e0e0e0", borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 500, color: "#6b7280", cursor: "pointer", fontFamily: FONT }}>Log out</button>
         </div>
@@ -441,12 +441,12 @@ export default function Nutrition() {
           {/* Scrollable content */}
           <div style={{ flex: 1, overflowY: "auto", padding: "20px 32px 32px", display: "flex", flexDirection: "column", gap: 16 }}>
 
-            {/* Row 1 â€” 4 stat cards */}
+            {/* Row 1 — 4 stat cards */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
               <StatCard
                 iconBg="#f0fdf4" iconColor="#16a34a" Icon={IconDrop}
                 label="Current Streak"
-                value={data ? `${data.streak ?? 0} days` : "â€”"}
+                value={data ? `${data.streak ?? 0} days` : "—"}
                 sub={data
                   ? (data.streak ?? 0) >= 7 ? "On fire! Keep going!"
                   : (data.streak ?? 0) >= 3 ? "Keep it going!"
@@ -459,19 +459,19 @@ export default function Nutrition() {
               <StatCard
                 iconBg="#fff7ed" iconColor="#ea580c" Icon={IconFlame}
                 label="Avg Calories"
-                value={data?.avg_calories ?? "â€”"}
+                value={data?.avg_calories ?? "—"}
                 sub={`daily avg this ${period === "monthly" ? "month" : "week"}`}
               />
               <StatCard
                 iconBg="#eff6ff" iconColor="#3b82f6" Icon={IconClipboard}
                 label="Meals Logged"
-                value={data?.meals_logged ?? "â€”"}
+                value={data?.meals_logged ?? "—"}
                 sub={`this ${period === "monthly" ? "month" : "week"}`}
               />
               <StatCard
                 iconBg="#faf5ff" iconColor="#9333ea" Icon={IconHeart}
                 label="Health Score"
-                value={data ? `${data.health_score ?? 0}/100` : "â€”"}
+                value={data ? `${data.health_score ?? 0}/100` : "—"}
                 sub={data
                   ? (data.health_score ?? 0) >= 80 ? "Great job!"
                   : (data.health_score ?? 0) >= 60 ? "Good progress!"
@@ -485,7 +485,7 @@ export default function Nutrition() {
               />
             </div>
 
-            {/* Row 2 â€” 4 macro bars */}
+            {/* Row 2 — 4 macro bars */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
               <MacroBar label="Daily Calories" Icon={IconFlame} iconColor="#ea580c"
                 current={tm.calories?.current ?? 0} target={tm.calories?.target ?? 2000} unit="kcal" color="#ea580c" />
@@ -497,7 +497,7 @@ export default function Nutrition() {
                 current={tm.fat_g?.current ?? 0} target={tm.fat_g?.target ?? 65} unit="g" color="#f59e0b" />
             </div>
 
-            {/* Row 3 â€” donut + line chart */}
+            {/* Row 3 — donut + line chart */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
 
               {/* Macro Distribution */}
@@ -523,7 +523,7 @@ export default function Nutrition() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
                   <h3 style={{ fontSize: 15, fontWeight: 700, color: "#111" }}>{period === "monthly" ? "Monthly" : "Weekly"} Calorie Trend</h3>
                   <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #e5e7eb", borderRadius: 8, padding: "5px 12px", fontSize: 12.5, color: "#374151", cursor: "pointer" }}>
-                    Calories <span style={{ fontSize: 9, color: "#9ca3af" }}>â–¼</span>
+                    Calories <span style={{ fontSize: 9, color: "#9ca3af" }}>▼</span>
                   </div>
                 </div>
                 {data?.weekly_trend?.length
@@ -533,7 +533,7 @@ export default function Nutrition() {
               </div>
             </div>
 
-            {/* Row 4 â€” nutrient bar chart + 3 summary cards */}
+            {/* Row 4 — nutrient bar chart + 3 summary cards */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
 
               {/* Nutrient Goals Progress */}
@@ -566,7 +566,7 @@ export default function Nutrition() {
                   <div style={{ fontSize: 13.5, fontWeight: 700, color: "#111" }}>Nutrition Goals</div>
                   <div style={{ fontSize: 11.5, color: "#6b7280", lineHeight: 1.5 }}>Weekly average across calories, protein, carbs &amp; fat</div>
                   <div style={{ fontSize: 24, fontWeight: 700, color: "#16a34a", marginTop: 4 }}>
-                    {data ? `${data.nutrition_goals_pct ?? 0}%` : "â€”"}
+                    {data ? `${data.nutrition_goals_pct ?? 0}%` : "—"}
                   </div>
                 </div>
 
@@ -580,7 +580,7 @@ export default function Nutrition() {
                     {data?.meal_consistency_sub ?? `Logged 0 meals this ${period === "monthly" ? "month" : "week"}`}
                   </div>
                   <div style={{ fontSize: 20, fontWeight: 700, color: consistency.color, marginTop: 4 }}>
-                    {data ? consistencyLabel : "â€”"}
+                    {data ? consistencyLabel : "—"}
                   </div>
                   {data && <Stars count={consistency.stars} />}
                 </div>
@@ -593,7 +593,7 @@ export default function Nutrition() {
                   <div style={{ fontSize: 13.5, fontWeight: 700, color: "#111" }}>Diet Balance</div>
                   <div style={{ fontSize: 11.5, color: "#6b7280", lineHeight: 1.5 }}>Based on macro distribution this week</div>
                   <div style={{ fontSize: 24, fontWeight: 700, color: "#7c3aed", marginTop: 4 }}>
-                    {data ? `${data.diet_balance_pct ?? 0}%` : "â€”"}
+                    {data ? `${data.diet_balance_pct ?? 0}%` : "—"}
                   </div>
                   {data && (
                     <div style={{ background: "#ede9fe", borderRadius: 999, height: 5, overflow: "hidden", marginTop: 2 }}>

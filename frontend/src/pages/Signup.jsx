@@ -212,7 +212,7 @@ export default function Signup() {
       <style>{styles}</style>
       <div style={{ height: "100vh", display: "flex", flexDirection: "column", fontFamily: "'DM Sans', sans-serif" }}>
 
-        {/* Navbar â€” normal flow so panels start below it */}
+        {/* Navbar — normal flow so panels start below it */}
         <nav style={{
           display: "flex", justifyContent: "space-between", alignItems: "center",
           padding: "20px 52px", flexShrink: 0, background: "#fff"
@@ -228,7 +228,7 @@ export default function Signup() {
           </div>
         </nav>
 
-        {/* Content row â€” fills remaining height */}
+        {/* Content row — fills remaining height */}
         <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
 
           {/* Left panel */}
@@ -283,7 +283,7 @@ export default function Signup() {
                     <button onClick={() => setStep(1)} style={{
                       background: "none", border: "none", color: "#1B4332", fontWeight: 600,
                       fontSize: 14, cursor: "pointer", padding: 0, fontFamily: "inherit"
-                    }}>â† Back to account</button>
+                    }}>← Back to account</button>
                   )}
                 </p>
               </>
@@ -412,7 +412,7 @@ export default function Signup() {
                           {form.preferences === "veg" ? "Vegetarian" : "Non-Vegetarian"}
 
                           {/* Down arrow icon */}
-                          <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>â–¼</span>
+                          <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>▼</span>
                         </div>
 
                         {/* The actual dropdown menu */}
@@ -472,7 +472,7 @@ export default function Signup() {
                         {form.cooking_frequency === "few_times" && "Few times a week"}
                         {form.cooking_frequency === "rarely" && "Rarely"}
 
-                        <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>â–¼</span>
+                        <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>▼</span>
                       </div>
 
                       {isFreqOpen && (
@@ -530,7 +530,7 @@ export default function Signup() {
                           color: "#b0b0b0"
                         }}
                       >
-                        â–¼
+                        ▼
                       </span>
                     </div>
 

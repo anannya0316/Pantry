@@ -25,7 +25,7 @@ def classify_item(
     household_size: int = 2,
 ):
     if not get_api_key():
-        return {"category": "Other"}
+        return {"display_name": item_name.lower(), "category": "Other", "quantity": 1, "unit": "unit"}
 
     prompt_template = load_prompt("classify.txt")
 
@@ -43,7 +43,7 @@ def classify_item(
     try:
         parsed = _call_llm(build_prompt())
         if not parsed:
-            return {"category": "Other"}
+            return {"display_name": item_name.lower(), "category": "Other", "quantity": 1, "unit": "unit"}
 
         recognized_name = parsed.get(
             "display_name",
@@ -71,4 +71,4 @@ def classify_item(
 
     except Exception as exc:
         print(f"classify_item error: {exc}")
-        return {"category": "Other"}
+        return {"display_name": item_name.lower(), "category": "Other", "quantity": 1, "unit": "unit"}

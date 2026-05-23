@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+﻿import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { getProfile } from "../services/api"
 import NotificationsDropdown from "../components/NotificationsDropdown"
@@ -121,7 +121,7 @@ useEffect(() => {
       setUserName(p.name || p.email || "there")
     })
 
-    fetch("http://localhost:8000/profile/insights", { headers: { "user-id": userId } })
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/profile/insights`, { headers: { "user-id": userId } })
       .then(r => r.json()).then(setInsights).catch(() => { })
   }, [navigate])
 
@@ -150,7 +150,7 @@ useEffect(() => {
             <span style={{ fontSize: 17, fontWeight: 700, color: "#1a2e1a" }}>Pantry</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1.5px solid #c6deb0", borderRadius: 999, padding: "5px 14px", fontSize: 13, color: "#206c1b", fontWeight: 500 }}>
-            <span style={{ fontSize: 11 }}>✦</span> Your personalized kitchen assistant
+            <span style={{ fontSize: 11 }}>âœ¦</span> Your personalized kitchen assistant
           </div>
         </div>
 
@@ -160,7 +160,7 @@ useEffect(() => {
             <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <UserIcon />
             </div>
-            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "—"}</span>
+            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "â€”"}</span>
           </div>
           <button onClick={handleLogout} style={{ background: "none", border: "1.5px solid #e0e0e0", borderRadius: 8, padding: "7px 16px", fontSize: 13, fontWeight: 500, color: "#6b7280", cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Log out</button>
         </div>
@@ -195,7 +195,7 @@ useEffect(() => {
   <div style={{ position: "relative", zIndex: 1, padding: "32px 20px 32px 52px", maxWidth: 450 }}>
     <h1 style={{ fontSize: 44, fontWeight: 800, color: "#0d1a0d", letterSpacing: "-1.2px", marginBottom: 12 }}>Hi {firstName}!</h1>
     <p style={{ fontSize: 18, fontWeight: 500, color: "#4b5563", marginBottom: 8 }}>Here's what your kitchen looks like today.</p>
-    <p style={{ fontSize: 15, color: "#6b7280", lineHeight: 1.6, marginBottom: 32 }}>Track inventory, discover recipes, plan meals, and<br />monitor nutrition — all in one place.</p>
+    <p style={{ fontSize: 15, color: "#6b7280", lineHeight: 1.6, marginBottom: 32 }}>Track inventory, discover recipes, plan meals, and<br />monitor nutrition â€” all in one place.</p>
     <button
       onClick={() => navigate("/profile")}
       style={{ background: "#166534", color: "#fff", border: "none", padding: "14px 28px", borderRadius: 12, fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}
@@ -271,7 +271,7 @@ useEffect(() => {
           <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: "10px" }}>
             {STATS.map(stat => {
               const raw = insights?.[stat.key]
-              const value = raw != null ? `${raw}${stat.suffix}` : "—"
+              const value = raw != null ? `${raw}${stat.suffix}` : "â€”"
               const sub = insights?.[stat.subKey] ?? "Loading..."
               const bar = raw != null ? statBarWidth(stat.key, raw) : 0
 

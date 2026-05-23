@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import axios from "axios"
 
-const BASE_URL = "http://localhost:8000"
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 const LeafIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -60,7 +60,7 @@ export default function VerifyEmail() {
               <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#E4F2DB", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
                 <div style={{ width: 24, height: 24, border: "3px solid #c6deb0", borderTopColor: "#166534", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
               </div>
-              <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111", marginBottom: 10 }}>Verifying your email…</h2>
+              <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111", marginBottom: 10 }}>Verifying your emailâ€¦</h2>
               <p style={{ fontSize: 14, color: "#9ca3af" }}>Just a moment</p>
             </>
           )}
@@ -74,7 +74,7 @@ export default function VerifyEmail() {
               </div>
               <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111", marginBottom: 10 }}>Email verified!</h2>
               <p style={{ fontSize: 14, color: "#6b7280", marginBottom: 8 }}>Your account has been created.</p>
-              <p style={{ fontSize: 13, color: "#9ca3af" }}>You can close this tab — your original window is continuing.</p>
+              <p style={{ fontSize: 13, color: "#9ca3af" }}>You can close this tab â€” your original window is continuing.</p>
             </>
           )}
 

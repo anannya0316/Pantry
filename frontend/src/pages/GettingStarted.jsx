@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getProfile } from "../services/api";
@@ -117,7 +117,7 @@ export default function GettingStarted() {
     try {
       const userId = localStorage.getItem("userId");
       await axios.post(
-        "http://localhost:8000/auth/complete-onboarding",
+        `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/auth/complete-onboarding`,
         { household_items: selectedFoods, goals: selectedGoals },
         { headers: { "user-id": userId } }
       );

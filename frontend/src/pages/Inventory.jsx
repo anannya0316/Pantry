@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react"
+﻿import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { getProfile } from "../services/api"
 import NotificationsDropdown from "../components/NotificationsDropdown"
 
-const BASE_URL = "http://localhost:8000"
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 const CATEGORIES = ["Dairy", "Protein", "Produce", "Grains", "Nuts", "Other"]
 const UNITS = ["unit", "kg", "g", "liter", "ml", "pieces", "lbs", "loaf"]
@@ -165,9 +165,9 @@ function DatePicker({ value, onChange, max }) {
       {open && view && (
         <div style={{ position: "fixed", top: pos.top, left: pos.left, background: "#fff", border: "1.5px solid #ececec", borderRadius: 16, padding: 16, boxShadow: "0 8px 32px rgba(0,0,0,0.12)", zIndex: 1000, width: 264 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-            <button onClick={prevMonth} style={{ background: "none", border: "1.5px solid #e8e8e8", borderRadius: 8, cursor: "pointer", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", color: "#555", fontFamily: "inherit" }}>‹</button>
+            <button onClick={prevMonth} style={{ background: "none", border: "1.5px solid #e8e8e8", borderRadius: 8, cursor: "pointer", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", color: "#555", fontFamily: "inherit" }}>â€¹</button>
             <span style={{ fontWeight: 600, fontSize: 14, color: "#111" }}>{MONTHS[view.month]} {view.year}</span>
-            <button onClick={nextMonth} style={{ background: "none", border: "1.5px solid #e8e8e8", borderRadius: 8, cursor: "pointer", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", color: "#555", fontFamily: "inherit" }}>›</button>
+            <button onClick={nextMonth} style={{ background: "none", border: "1.5px solid #e8e8e8", borderRadius: 8, cursor: "pointer", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", color: "#555", fontFamily: "inherit" }}>â€º</button>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", marginBottom: 6 }}>
             {WEEK_DAYS.map(d => <div key={d} style={{ textAlign: "center", fontSize: 11, color: "#bbb", fontWeight: 600, padding: "4px 0" }}>{d}</div>)}
@@ -192,7 +192,7 @@ const resetItem = () => ({ display_name: "", quantity: "", unit: "unit", categor
 const inputStyle = (extra = {}) => ({ border: "1.5px solid #e8e8e8", borderRadius: 10, padding: "7px 12px", fontSize: 14, outline: "none", fontFamily: "inherit", background: "#fff", width: "100%", boxSizing: "border-box", ...extra })
 const selectStyle = (extra = {}) => ({ border: "1.5px solid #e8e8e8", borderRadius: 10, padding: "7px 10px", fontSize: 14, outline: "none", fontFamily: "inherit", background: "#fff", cursor: "pointer", width: "100%", ...extra })
 
-const formatDate = (d) => d ? new Date(d + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—"
+const formatDate = (d) => d ? new Date(d + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "â€”"
 
 export default function Inventory() {
   const navigate = useNavigate()
@@ -326,7 +326,7 @@ export default function Inventory() {
 
   const statsData = [
     { type: "total",      label: "Total Items",       sub: "items in stock",          value: enriched.length,                                                                              items: enriched,                                                                              bg: "#E4F2DB", iconBg: "#E4F2DB", iconColor: "#206C1B" },
-    { type: "low",        label: "Low Stock Items",   sub: "items running low",       value: lowStockNames === null ? "…" : enriched.filter(i => i.quantity !== 0 && i.quantity !== "0" && lowStockNames.includes(i.display_name)).length, items: enriched.filter(i => i.quantity !== 0 && i.quantity !== "0" && (lowStockNames || []).includes(i.display_name)), bg: "#fffbeb", iconBg: "#fef3c7", iconColor: "#d97706" },
+    { type: "low",        label: "Low Stock Items",   sub: "items running low",       value: lowStockNames === null ? "â€¦" : enriched.filter(i => i.quantity !== 0 && i.quantity !== "0" && lowStockNames.includes(i.display_name)).length, items: enriched.filter(i => i.quantity !== 0 && i.quantity !== "0" && (lowStockNames || []).includes(i.display_name)), bg: "#fffbeb", iconBg: "#fef3c7", iconColor: "#d97706" },
     { type: "expired",    label: "Expired Items",     sub: "past expiration",         value: enriched.filter(i => i.quantity !== 0 && i.quantity !== "0" && getStatus(i.purchase_date, i.shelf_life_days).type === "expired").length, items: enriched.filter(i => i.quantity !== 0 && i.quantity !== "0" && getStatus(i.purchase_date, i.shelf_life_days).type === "expired"), bg: "#fff5f5", iconBg: "#fee2e2", iconColor: "#dc2626" },
     { type: "outofstock", label: "Out of Stock Items",sub: "currently out of stock",  value: enriched.filter(i => i.quantity === 0).length,                                                items: enriched.filter(i => i.quantity === 0),                                                bg: "#f9fafb", iconBg: "#f3f4f6", iconColor: "#6b7280" },
   ]
@@ -354,7 +354,7 @@ export default function Inventory() {
             <span style={{ fontSize: 17, fontWeight: 700, color: "#1a2e1a" }}>Pantry</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1.5px solid #c6deb0", borderRadius: 999, padding: "5px 14px", fontSize: 13, color: "#206c1b", fontWeight: 500 }}>
-            <span style={{ fontSize: 11 }}>✦</span> Your personalized kitchen assistant
+            <span style={{ fontSize: 11 }}>âœ¦</span> Your personalized kitchen assistant
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -363,7 +363,7 @@ export default function Inventory() {
             <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <UserIcon />
             </div>
-            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "—"}</span>
+            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "â€”"}</span>
           </div>
           <button onClick={() => { localStorage.removeItem("userId"); localStorage.removeItem("token"); navigate("/login") }} style={{ background: "none", border: "1.5px solid #e0e0e0", borderRadius: 8, padding: "7px 16px", fontSize: 14, fontWeight: 500, color: "#6b7280", cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Log out</button>
         </div>
@@ -417,7 +417,7 @@ export default function Inventory() {
             </div>
           </div>
 
-          {/* Search + Filter + Add — fixed, does not scroll */}
+          {/* Search + Filter + Add â€” fixed, does not scroll */}
           <div style={{ padding: "16px 40px", flexShrink: 0, display: "flex", gap: 12, alignItems: "center" }}>
             <div style={{ flex: 1, position: "relative" }}>
               <svg style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -523,7 +523,7 @@ export default function Inventory() {
                           </td>
                           <td style={{ padding: "14px 20px" }}>
                             {item.quantity === 0 || item.quantity === "0"
-                              ? <span style={{ fontSize: 13, color: "#9ca3af" }}>—</span>
+                              ? <span style={{ fontSize: 13, color: "#9ca3af" }}>â€”</span>
                               : <span style={{ fontSize: 12, fontWeight: 600, color: status.color, background: status.bg, padding: "3px 10px", borderRadius: 6 }}>{status.label}</span>}
                           </td>
                           <td style={{ padding: "14px 20px" }}>
@@ -627,7 +627,7 @@ export default function Inventory() {
                           <div style={{ padding: "0 16px 14px" }}>
                             {item.quantity === 0 || item.quantity === "0" ? (
                               <div style={{ borderRadius: 10, padding: "8px 14px", display: "flex", alignItems: "center" }}>
-                                <span style={{ fontSize: 13, color: "#9ca3af" }}>—</span>
+                                <span style={{ fontSize: 13, color: "#9ca3af" }}>â€”</span>
                               </div>
                             ) : (
                               <div style={{ background: status.bg, borderRadius: 10, padding: "8px 14px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -685,12 +685,12 @@ export default function Inventory() {
                     <CategoryIcon category={item.category} size={40} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 15, fontWeight: 700, color: "#0d1a0d", marginBottom: 3 }}>{item.display_name}</div>
-                      <div style={{ fontSize: 12, color: "#9ca3af" }}>{item.quantity} {item.unit} · <span style={{ color: cs.color }}>{item.category}</span></div>
+                      <div style={{ fontSize: 12, color: "#9ca3af" }}>{item.quantity} {item.unit} Â· <span style={{ color: cs.color }}>{item.category}</span></div>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 5 }}>
                       <span style={{ fontSize: 12, color: "#9ca3af" }}>{formatDate(item.purchase_date)}</span>
                       {item.quantity === 0 || item.quantity === "0"
-                        ? <span style={{ fontSize: 11, color: "#9ca3af" }}>—</span>
+                        ? <span style={{ fontSize: 11, color: "#9ca3af" }}>â€”</span>
                         : <span style={{ fontSize: 11, fontWeight: 600, color: status.color, background: status.bg, padding: "2px 8px", borderRadius: 6, whiteSpace: "nowrap" }}>{status.label}</span>}
                     </div>
                   </div>
@@ -748,7 +748,7 @@ export default function Inventory() {
                             style={{ width: "100%", height: 38, border: "1.5px solid #e8ede2", borderRadius: 9, padding: "0 12px", fontSize: 13, outline: "none", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", color: "#111" }}
                           />
                           {classifyingRows[rowIdx] && (
-                            <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: "#9ca3af" }}>…</span>
+                            <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: "#9ca3af" }}>â€¦</span>
                           )}
                         </div>
                       </td>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
@@ -153,7 +153,7 @@ export default function Signup() {
     if (step !== 3) return
     const interval = setInterval(async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/auth/check-verification?email=${encodeURIComponent(form.email)}`)
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/auth/check-verification?email=${encodeURIComponent(form.email)}`)
         if (res.data.verified) {
           localStorage.setItem("userId", res.data.user_id)
           navigate("/getting-started")
@@ -194,7 +194,7 @@ export default function Signup() {
         localStorage.setItem("userId", res.user_id);
         navigate("/getting-started");
       } else {
-        await axios.post("http://localhost:8000/auth/create-account", {
+        await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/auth/create-account`, {
           email: form.email, password: form.password, name: form.name,
           phone: form.phone, household_size: Number(form.household_size),
           diet: form.preferences, cooking_frequency: form.cooking_frequency,
@@ -212,7 +212,7 @@ export default function Signup() {
       <style>{styles}</style>
       <div style={{ height: "100vh", display: "flex", flexDirection: "column", fontFamily: "'DM Sans', sans-serif" }}>
 
-        {/* Navbar — normal flow so panels start below it */}
+        {/* Navbar â€” normal flow so panels start below it */}
         <nav style={{
           display: "flex", justifyContent: "space-between", alignItems: "center",
           padding: "20px 52px", flexShrink: 0, background: "#fff"
@@ -228,7 +228,7 @@ export default function Signup() {
           </div>
         </nav>
 
-        {/* Content row — fills remaining height */}
+        {/* Content row â€” fills remaining height */}
         <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
 
           {/* Left panel */}
@@ -283,7 +283,7 @@ export default function Signup() {
                     <button onClick={() => setStep(1)} style={{
                       background: "none", border: "none", color: "#1B4332", fontWeight: 600,
                       fontSize: 14, cursor: "pointer", padding: 0, fontFamily: "inherit"
-                    }}>← Back to account</button>
+                    }}>â† Back to account</button>
                   )}
                 </p>
               </>
@@ -412,7 +412,7 @@ export default function Signup() {
                           {form.preferences === "veg" ? "Vegetarian" : "Non-Vegetarian"}
 
                           {/* Down arrow icon */}
-                          <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>▼</span>
+                          <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>â–¼</span>
                         </div>
 
                         {/* The actual dropdown menu */}
@@ -472,7 +472,7 @@ export default function Signup() {
                         {form.cooking_frequency === "few_times" && "Few times a week"}
                         {form.cooking_frequency === "rarely" && "Rarely"}
 
-                        <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>▼</span>
+                        <span style={{ marginLeft: "auto", fontSize: "10px", color: "#b0b0b0" }}>â–¼</span>
                       </div>
 
                       {isFreqOpen && (
@@ -518,7 +518,7 @@ export default function Signup() {
                       onClick={() => setIsRestockOpen(!isRestockOpen)}
                     >
                       <span className="input-icon">
-                        🛒
+                        ðŸ›’
                       </span>
 
                       {form.grocery_shopping_day}
@@ -530,7 +530,7 @@ export default function Signup() {
                           color: "#b0b0b0"
                         }}
                       >
-                        ▼
+                        â–¼
                       </span>
                     </div>
 

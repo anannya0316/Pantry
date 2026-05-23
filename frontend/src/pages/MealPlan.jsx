@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"
+﻿import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { getProfile } from "../services/api"
 import NotificationsDropdown from "../components/NotificationsDropdown"
 
-const BASE_URL = "http://localhost:8000"
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 const DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
 const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 const MEAL_TYPES = ["breakfast", "lunch", "dinner"]
@@ -134,7 +134,7 @@ function MealCard({ meal, onDelete, todayDow, currentHour, mealType }) {
   return (
     <div style={{ background: MEAL_BG[mealType] || "#f9fafb", border: "none", borderRadius: 12, padding: "10px 12px", position: "relative", minHeight: 60 }}>
       {!confirmDelete ? (
-        <button onClick={() => setConfirmDelete(true)} style={{ position: "absolute", top: 5, right: 6, background: "none", border: "none", cursor: "pointer", color: "#ccc", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
+        <button onClick={() => setConfirmDelete(true)} style={{ position: "absolute", top: 5, right: 6, background: "none", border: "none", cursor: "pointer", color: "#ccc", fontSize: 16, lineHeight: 1, padding: 0 }}>Ã—</button>
       ) : (
         <div style={{ position: "absolute", top: 5, right: 6, display: "flex", gap: 3 }}>
           <button onClick={() => onDelete(meal.day, mealType)} style={{ fontSize: 10, background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 4, padding: "2px 6px", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>Delete</button>
@@ -174,7 +174,7 @@ function AddMealModal({ modal, availableTypes, onAdd, onClose }) {
       <div style={{ background: "#fff", borderRadius: 20, padding: 28, width: 360, boxShadow: "0 20px 60px rgba(0,0,0,0.15)" }} onClick={e => e.stopPropagation()}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
           <h2 style={{ fontSize: 16, fontWeight: 700, color: "#111", margin: 0 }}>{modal.day}</h2>
-          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 22, color: "#bbb", lineHeight: 1, padding: 0 }}>×</button>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 22, color: "#bbb", lineHeight: 1, padding: 0 }}>Ã—</button>
         </div>
 
         {!modal.meal_type && availableTypes.length > 1 && (
@@ -203,14 +203,14 @@ function AddMealModal({ modal, availableTypes, onAdd, onClose }) {
         {loading && (
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#aaa", marginBottom: 14 }}>
             <div style={{ width: 12, height: 12, border: "2px solid #e0e0e0", borderTopColor: "#111", borderRadius: "50%", animation: "spin 0.7s linear infinite", flexShrink: 0 }} />
-            Fetching ingredients…
+            Fetching ingredientsâ€¦
           </div>
         )}
 
         <div style={{ display: "flex", gap: 8 }}>
           <button onClick={onClose} style={{ flex: 1, height: 40, background: "none", border: "1.5px solid #e0e0e0", borderRadius: 10, cursor: "pointer", fontSize: 14, color: "#888", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
           <button onClick={handleSubmit} disabled={loading || !mealName.trim()} style={{ flex: 1, height: 40, background: "#166534", color: "#fff", border: "none", borderRadius: 10, cursor: loading || !mealName.trim() ? "not-allowed" : "pointer", fontSize: 14, fontWeight: 600, fontFamily: "'DM Sans', sans-serif", opacity: loading || !mealName.trim() ? 0.6 : 1 }}>
-            {loading ? "Adding…" : "Add"}
+            {loading ? "Addingâ€¦" : "Add"}
           </button>
         </div>
       </div>
@@ -355,7 +355,7 @@ export default function MealPlan() {
             <span style={{ fontSize: 17, fontWeight: 700, color: "#1a2e1a" }}>Pantry</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1.5px solid #c6deb0", borderRadius: 999, padding: "5px 14px", fontSize: 13, color: "#206c1b", fontWeight: 500 }}>
-            <span style={{ fontSize: 11 }}>✦</span> Your personalized kitchen assistant
+            <span style={{ fontSize: 11 }}>âœ¦</span> Your personalized kitchen assistant
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -364,7 +364,7 @@ export default function MealPlan() {
             <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <UserIcon />
             </div>
-            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "—"}</span>
+            <span style={{ fontSize: 14, fontWeight: 500, color: "#374151" }}>{firstName || "â€”"}</span>
           </div>
           <button onClick={() => { localStorage.removeItem("userId"); localStorage.removeItem("token"); navigate("/login") }} style={{ background: "none", border: "1.5px solid #e0e0e0", borderRadius: 8, padding: "7px 16px", fontSize: 14, fontWeight: 500, color: "#6b7280", cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Log out</button>
         </div>
@@ -414,7 +414,7 @@ export default function MealPlan() {
           <div style={{ padding: "24px 32px 0", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div>
               <h1 style={{ fontSize: 24, fontWeight: 800, color: "#0d1a0d", marginBottom: 4 }}>Meal Planning</h1>
-              <p style={{ fontSize: 14, color: "#6b7280" }}>Your weekly template — edit anytime</p>
+              <p style={{ fontSize: 14, color: "#6b7280" }}>Your weekly template â€” edit anytime</p>
             </div>
             <button
               onClick={() => { setShowBulkModal(true); setBulkRows([resetMealRow()]); setBulkError("") }}
@@ -430,9 +430,9 @@ export default function MealPlan() {
             {/* Restock notice */}
             {restocked && (
               <div style={{ display: "flex", alignItems: "center", gap: 10, background: "#E4F2DB", border: "1.5px solid #bbf7d0", borderRadius: 12, padding: "12px 18px", marginBottom: 16, fontSize: 13, color: "#15803d", fontWeight: 500 }}>
-                <span>🛒</span>
+                <span>ðŸ›’</span>
                 <span>Your inventory has been restocked for the new week based on your meal plan.</span>
-                <button onClick={() => setRestocked(false)} style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", color: "#86efac", fontSize: 18, lineHeight: 1, padding: 0 }}>×</button>
+                <button onClick={() => setRestocked(false)} style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", color: "#86efac", fontSize: 18, lineHeight: 1, padding: 0 }}>Ã—</button>
               </div>
             )}
 
@@ -444,7 +444,7 @@ export default function MealPlan() {
                 </svg>
               </div>
               <span>
-                <strong style={{ color: "#166534" }}>Weekly grocery assumption:</strong> Meals from past days are automatically marked as consumed and deducted from your inventory. Every Monday, your inventory is restocked based on your meal plan — simulating a weekly grocery run.
+                <strong style={{ color: "#166534" }}>Weekly grocery assumption:</strong> Meals from past days are automatically marked as consumed and deducted from your inventory. Every Monday, your inventory is restocked based on your meal plan â€” simulating a weekly grocery run.
               </span>
             </div>
 

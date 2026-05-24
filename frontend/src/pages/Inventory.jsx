@@ -212,6 +212,8 @@ export default function Inventory() {
   const [addError, setAddError]         = useState("")
   const [adding, setAdding]             = useState(false)
   const [classifyingRows, setClassifyingRows] = useState({})
+  const [categoryLockedRows, setCategoryLockedRows] = useState({})
+  const classifiedNames = useRef({})
   const [lowStockNames, setLowStockNames] = useState(null)
 
   const userId = localStorage.getItem("userId")
@@ -269,13 +271,18 @@ export default function Inventory() {
   const setEV = (field, value) => setEditValues(v => ({ ...v, [field]: value }))
 
   const handleClassifyRow = async (rowIdx, name) => {
-    if (!name.trim()) return
+    const trimmed = name.trim()
+    if (!trimmed) return
+    if (classifiedNames.current[rowIdx] === trimmed.toLowerCase()) return
     setClassifyingRows(r => ({ ...r, [rowIdx]: true }))
     try {
-      const res = await axios.post(`${BASE_URL}/inventory/classify`, { display_name: name.trim() }, { headers: { "user-id": userId } })
-      setNewItems(rows => rows.map((row, i) =>
-        i === rowIdx ? { ...row, category: res.data.category ?? "Other", unit: res.data.unit ?? row.unit } : row
-      ))
+      const res = await axios.post(`${BASE_URL}/inventory/classify`, { display_name: trimmed }, { headers: { "user-id": userId } })
+      classifiedNames.current[rowIdx] = trimmed.toLowerCase()
+      setNewItems(rows => rows.map((row, i) => {
+        if (i !== rowIdx) return row
+        const newCategory = categoryLockedRows[rowIdx] ? row.category : (res.data.category ?? "Other")
+        return { ...row, category: newCategory, unit: res.data.unit ?? row.unit }
+      }))
     } catch { /* noop */ } finally { setClassifyingRows(r => ({ ...r, [rowIdx]: false })) }
   }
 
@@ -742,8 +749,17 @@ export default function Inventory() {
                             onChange={e => {
                               const val = e.target.value
                               updateRow(rowIdx, "display_name", val)
+                              setCategoryLockedRows(r => ({ ...r, [rowIdx]: false }))
+                              classifiedNames.current[rowIdx] = null
                               clearTimeout(window[`classifyTimer_${rowIdx}`])
-                              window[`classifyTimer_${rowIdx}`] = setTimeout(() => handleClassifyRow(rowIdx, val), 500)
+                              window[`classifyTimer_${rowIdx}`] = setTimeout(() => handleClassifyRow(rowIdx, val), 600)
+                            }}
+                            onBlur={e => {
+                              const val = e.target.value
+                              if (val.trim()) {
+                                clearTimeout(window[`classifyTimer_${rowIdx}`])
+                                handleClassifyRow(rowIdx, val)
+                              }
                             }}
                             style={{ width: "100%", height: 38, border: "1.5px solid #e8ede2", borderRadius: 9, padding: "0 12px", fontSize: 13, outline: "none", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", color: "#111" }}
                           />
@@ -767,8 +783,15 @@ export default function Inventory() {
                         </select>
                       </td>
                       <td style={{ padding: "10px 10px", width: 120 }}>
-                        <select value={row.category} onChange={e => updateRow(rowIdx, "category", e.target.value)}
-                          style={{ width: "100%", height: 38, border: "1.5px solid #e8ede2", borderRadius: 9, padding: "0 8px", fontSize: 13, outline: "none", background: "#fff", fontFamily: "'DM Sans', sans-serif", cursor: "pointer" }}>
+                        <select
+                          value={row.category}
+                          disabled={!!classifyingRows[rowIdx]}
+                          onChange={e => {
+                            updateRow(rowIdx, "category", e.target.value)
+                            setCategoryLockedRows(r => ({ ...r, [rowIdx]: true }))
+                          }}
+                          style={{ width: "100%", height: 38, border: `1.5px solid ${classifyingRows[rowIdx] ? "#c6deb0" : "#e8ede2"}`, borderRadius: 9, padding: "0 8px", fontSize: 13, outline: "none", background: classifyingRows[rowIdx] ? "#f0f7ec" : "#fff", fontFamily: "'DM Sans', sans-serif", cursor: classifyingRows[rowIdx] ? "wait" : "pointer", color: classifyingRows[rowIdx] ? "#9ca3af" : "#111", transition: "border-color 0.2s, background 0.2s" }}>
+                          {classifyingRows[rowIdx] && <option value="">Detecting...</option>}
                           {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
                       </td>

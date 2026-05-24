@@ -46,6 +46,7 @@ def call_llm(
             "model": model,
             "messages": [{"role": "user", "content": prompt}],
             "temperature": temperature,
+            "max_tokens": 256,
         },
         timeout=timeout,
     )

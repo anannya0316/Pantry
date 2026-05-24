@@ -5,7 +5,6 @@ from dao.inventory_dao import (
     update_inventory,
     push_inventory_items,
     update_inventory_item_by_index,
-    get_profile,
     get_user
 )
 
@@ -211,27 +210,13 @@ def add_inventory_items(
 
     new_items = []
 
-    profile = get_profile(user_id)
-
-    household_size = (
-        profile.get("household_size", 1)
-        if profile else 1
-    )
-
     for item in request.items:
-        classified = classify_item(
-            item.display_name,
-            household_size
-        ) or {}
-
         input_name = item.display_name.strip().lower()
 
-        resolved_name = classified.get(
-            "display_name",
-            input_name
-        )
+        duplicate_index = None
+        duplicate_item = None
 
-        for inv_item in existing_items:
+        for idx, inv_item in enumerate(existing_items):
             existing_display = inv_item.get(
                 "display_name", ""
             ).strip().lower()
@@ -241,43 +226,39 @@ def add_inventory_items(
             )
 
             is_duplicate = (
-                resolved_name == existing_display
-                or input_name == existing_display
-                or resolved_name in existing_aliases
+                input_name == existing_display
                 or input_name in existing_aliases
             )
 
             if is_duplicate:
-                raise HTTPException(
-                    status_code=409,
-                    detail=(
-                        f"You already have "
-                        f"{inv_item.get('display_name')}! "
-                        f"Please edit the quantity instead."
-                    )
-                )
+                duplicate_index = idx
+                duplicate_item = inv_item
+                break
 
-        aliases = (
-            [input_name]
-            if input_name != resolved_name
-            else []
-        )
+        if duplicate_index is not None:
+            merged_quantity = (
+                float(duplicate_item.get("quantity", 0))
+                + float(item.quantity)
+            )
+            updated_item = {
+                **duplicate_item,
+                "quantity": merged_quantity,
+                "purchase_date": item.purchase_date or duplicate_item.get("purchase_date"),
+            }
+            update_inventory_item_by_index(
+                user_id,
+                duplicate_index,
+                updated_item
+            )
+            existing_items[duplicate_index] = updated_item
+            continue
 
         item_dict = {
-            "display_name": resolved_name.title(),
-            "aliases": aliases,
-            "quantity": classified.get(
-                "quantity",
-                item.quantity
-            ),
-            "unit": classified.get(
-                "unit",
-                item.unit
-            ),
-            "category": classified.get(
-                "category",
-                "Other"
-            ),
+            "display_name": item.display_name.strip().title(),
+            "aliases": [],
+            "quantity": item.quantity,
+            "unit": item.unit,
+            "category": item.category or "Other",
             "purchase_date": item.purchase_date,
             "status": "fresh"
         }

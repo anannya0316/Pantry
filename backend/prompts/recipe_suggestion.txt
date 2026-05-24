@@ -4,11 +4,18 @@ The user has the following ingredients available:
 {inventory}
 
 Household size: {household_size} people
+
+User profile:
+{profile_context}
+
 {preferences_line}
 
 Task:
-- If a specific dish is mentioned in the preferences above, generate the standard, authentic recipe for THAT dish with the correct traditional ingredients and quantities. Do NOT modify or simplify the recipe based on what's in the inventory — give the real recipe. Use the inventory only to decide which ingredients go in "have" vs "need_to_buy".
+- If a specific dish is mentioned in the special request above, generate the standard, authentic recipe for THAT dish with the correct traditional ingredients and quantities. Do NOT modify or simplify the recipe based on what's in the inventory — give the real recipe. Use the inventory only to decide which ingredients go in "have" vs "need_to_buy".
 - If no specific dish is mentioned, suggest the single best recipe that uses the most available ingredients from the inventory.
+- ALWAYS respect the user's diet (e.g. vegetarian means no meat/fish), allergies (never include those ingredients), and disliked ingredients.
+- Adjust servings for any guest count mentioned in the special request; otherwise use household size.
+- Prefer the user's favorite cuisines and liked ingredients when choosing between equally good options.
 
 Respond ONLY with a valid JSON array containing exactly 1 recipe object. No markdown, no explanation — just the JSON array.
 
@@ -18,7 +25,7 @@ Each recipe object must have exactly these fields:
 - "prep_time": preparation time e.g. "10 mins" (string)
 - "cook_time": cooking time e.g. "25 mins" (string)
 - "servings": number of servings as a string e.g. "4"
-- "ingredients": array of objects, each with "name" (string), "quantity" (string), "unit" (string). Include realistic quantities for the household size.
+- "ingredients": array of objects, each with "name" (string), "quantity" (string), "unit" (string). Include realistic quantities for the serving count.
 - "steps": array of short cooking steps (4-6 steps, plain strings)
 - "have": array of ingredient names (strings) that ARE in the inventory
 - "need_to_buy": array of ingredient names (strings) that are NOT in the inventory but needed

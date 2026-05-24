@@ -449,7 +449,8 @@ export default function MealPlan() {
             </div>
 
             {/* Calendar */}
-            <div style={{ border: "1px solid #f0f0f0", borderRadius: 20, overflow: "hidden", flex: 1, display: "flex", flexDirection: "column" }}>
+            <div style={{ border: "1px solid #f0f0f0", borderRadius: 20, flex: 1, display: "flex", flexDirection: "column", minHeight: 0, isolation: "isolate" }}>
+            <div style={{ borderRadius: 19, overflow: "hidden", flex: 1, display: "flex", flexDirection: "column" }}>
 
               {/* Day headers */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", flexShrink: 0 }}>
@@ -517,8 +518,9 @@ export default function MealPlan() {
                 })}
               </div>
             </div>
+            </div>
 
-            
+
           </div>
         </div>
       </div>

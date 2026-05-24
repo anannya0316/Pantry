@@ -339,7 +339,11 @@ function Profile() {
     })
   }, [navigate, userId])
 
-  const formatDate = (val) => val || "—"
+  const formatDate = (val) => {
+    if (!val) return "—"
+    const d = new Date(val)
+    return isNaN(d) ? val : d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("userId")

@@ -188,7 +188,9 @@ def _make_nutrition_tools(user_id: str):
 def _make_recipe_tools(user_id: str):
     @tool
     def suggest_recipes(preferences: Optional[str] = None) -> dict:
-        """Generate recipe suggestions from current inventory. Call this directly for cooking ideas — do NOT call get_all_inventory_items first."""
+        """Generate recipe suggestions using the user's inventory and full profile (diet, allergies, spice preference, etc.).
+        Pass any extra context as `preferences` — e.g. a specific dish name, guest count ("for 8 guests"), or occasion.
+        Do NOT call get_all_inventory_items or get_profile first; this tool fetches them internally."""
         return _rec.suggest_recipes(user_id=user_id, preferences=preferences)
 
     return [suggest_recipes]

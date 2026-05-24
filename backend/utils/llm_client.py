@@ -4,7 +4,7 @@ import requests as http_requests
 from openai import OpenAI
 
 _OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-_OPENROUTER_MODEL = "openai/gpt-4o-mini"
+_OPENROUTER_MODEL = "deepseek/deepseek-v4-flash"
 
 
 def _get_config():
@@ -30,6 +30,7 @@ def call_llm(
     prompt: str,
     temperature: float = 0,
     timeout: int = 15,
+    max_tokens: int = 1500,
 ) -> str:
     base_url, api_key, model = _get_config()
 
@@ -46,7 +47,7 @@ def call_llm(
             "model": model,
             "messages": [{"role": "user", "content": prompt}],
             "temperature": temperature,
-            "max_tokens": 256,
+            "max_tokens": max_tokens,
         },
         timeout=timeout,
     )

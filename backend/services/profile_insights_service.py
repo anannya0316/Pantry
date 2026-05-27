@@ -21,7 +21,8 @@ from dao.inventory_dao import (
 
 from dao.meal_dao import get_meal_plan
 
-from utils.nutrition_utils import get_all_consumed_meals
+from utils.nutrition_utils import get_all_consumed_meals, get_active_meals
+from utils.matching_utils import fuzzy_match
 
 from dao.nutrition_dao import get_nutrition_logs
 
@@ -122,7 +123,34 @@ def get_profile_insights(
         )
     )
 
-    grocery_efficiency = 0
+    meal_doc = get_meal_plan(user_id)
+    active_meals = get_active_meals(meal_doc) if meal_doc else []
+    all_ingredient_names = [
+        ing["name"]
+        for meal in active_meals
+        for ing in meal.get("ingredients", [])
+        if ing.get("name")
+    ]
+
+    if all_ingredient_names:
+        in_stock = sum(
+            1
+            for name in all_ingredient_names
+            if any(
+                (
+                    fuzzy_match(name, item.get("display_name", ""))
+                    or any(
+                        fuzzy_match(name, alias)
+                        for alias in item.get("aliases", [])
+                    )
+                )
+                and float(item.get("quantity", 0)) > 0
+                for item in inventory
+            )
+        )
+        grocery_efficiency = round(in_stock / len(all_ingredient_names) * 100)
+    else:
+        grocery_efficiency = 0
 
     if grocery_efficiency >= 80:
         grocery_sub = "Well stocked"
@@ -190,7 +218,6 @@ def get_profile_insights(
         and monday <= d <= today
     ]
 
-    meal_doc = get_meal_plan(user_id)
     meal_scores = [
         entry["health_score"]
         for entry in (get_all_consumed_meals(meal_doc) if meal_doc else [])

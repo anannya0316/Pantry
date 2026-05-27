@@ -31,7 +31,7 @@ class UpdateProfileInput(BaseModel):
     household_size: Optional[int] = Field(default=None, description="New household size.")
     cooking_frequency: Optional[str] = Field(default=None, description="New cooking frequency.")
     grocery_shopping_day: Optional[str] = Field(default=None, description="New grocery shopping day.")
-    diet: Optional[str] = Field(default=None, description="New diet preference — e.g., 'veg' or 'non_veg'.")
+    diet: Optional[str] = Field(default=None, description="New diet preference. Use 'veg' for vegetarian/vegan, 'non_veg' for non-vegetarian.")
     goals: Optional[List[str]] = Field(default=None, description="Updated list of health or dietary goals.")
     allergies: Optional[List[str]] = Field(default=None, description="Updated list of allergies or intolerances.")
     spice_preference: Optional[str] = Field(default=None, description="New spice preference — e.g., 'Mild', 'Medium', 'Hot'.")
@@ -42,6 +42,18 @@ class UpdateProfileInput(BaseModel):
 
 
 ALLOWED_DIET_TYPES = {"veg", "non_veg"}
+
+_DIET_ALIASES = {
+    "vegetarian": "veg",
+    "vegan": "veg",
+    "plant-based": "veg",
+    "plant based": "veg",
+    "non-vegetarian": "non_veg",
+    "non vegetarian": "non_veg",
+    "nonvegetarian": "non_veg",
+    "omnivore": "non_veg",
+    "meat eater": "non_veg",
+}
 
 ALLOWED_WEEKDAYS = {
     "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -116,8 +128,10 @@ def update_profile(
         if not updates:
             return {"success": False, "error": "No fields provided to update."}
 
-        if "diet" in updates and updates["diet"] not in ALLOWED_DIET_TYPES:
-            return {"success": False, "error": f"Invalid diet. Allowed values: {sorted(ALLOWED_DIET_TYPES)}"}
+        if "diet" in updates:
+            updates["diet"] = _DIET_ALIASES.get(updates["diet"].lower().strip(), updates["diet"])
+            if updates["diet"] not in ALLOWED_DIET_TYPES:
+                return {"success": False, "error": f"Invalid diet. Allowed values: {sorted(ALLOWED_DIET_TYPES)}"}
 
         if "grocery_shopping_day" in updates and updates["grocery_shopping_day"] not in ALLOWED_WEEKDAYS:
             return {"success": False, "error": f"Invalid grocery_shopping_day. Allowed values: {sorted(ALLOWED_WEEKDAYS)}"}

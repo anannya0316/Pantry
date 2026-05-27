@@ -116,15 +116,16 @@ def get_weekly_nutrition(user_id: str):
             if (d := parse_log_date(log)) is not None and monday <= d <= today
         ]
 
-        # Consumed meals from the current week's meal plan
-        # (weekly restock resets consumed=False each new week, so consumed=True means this week)
+        # Active meals from the current week's meal plan (valid + non-skipped).
+        # We count planned meals regardless of consumed status — if it's in the plan
+        # for this week, it counts toward weekly nutrition.
         meal_doc = get_meal_plan(user_id)
         plan_meals = []
         if meal_doc:
             for day_name, day_data in meal_doc.get("meals", {}).items():
                 for meal_type, slot_meals in day_data.items():
                     for meal in reversed(slot_meals):
-                        if meal.get("valid") is True and meal.get("consumed") is True:
+                        if meal.get("valid") is True and meal.get("skipped") is not True:
                             plan_meals.append({
                                 "source": "meal_plan",
                                 "meal": meal.get("meal_name"),

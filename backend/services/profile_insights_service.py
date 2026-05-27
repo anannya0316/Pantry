@@ -21,7 +21,7 @@ from dao.inventory_dao import (
 
 from dao.meal_dao import get_meal_plan
 
-from utils.nutrition_utils import get_all_consumed_meals, get_active_meals
+from utils.nutrition_utils import get_active_meals
 from utils.matching_utils import fuzzy_match
 
 from dao.nutrition_dao import get_nutrition_logs
@@ -220,7 +220,7 @@ def get_profile_insights(
 
     meal_scores = [
         entry["health_score"]
-        for entry in (get_all_consumed_meals(meal_doc) if meal_doc else [])
+        for entry in (get_active_meals(meal_doc) if meal_doc else [])
         if isinstance(entry.get("health_score"), (int, float))
     ]
 

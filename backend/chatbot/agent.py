@@ -182,7 +182,13 @@ def _make_nutrition_tools(user_id: str):
         """Fetch nutrition log entries for a specific meal by name. Case-insensitive partial match."""
         return _nutr.get_nutrition_log_by_meal_name(user_id=user_id, meal_name=meal_name)
 
-    return [log_recipe, get_all_nutrition_logs, get_nutrition_log_by_meal]
+    @tool
+    def get_weekly_nutrition() -> dict:
+        """Get this week's full nutrition picture: both logged meals and consumed meal plan meals combined.
+        Use this when the user asks how they have been eating this week, or for a weekly summary."""
+        return _nutr.get_weekly_nutrition(user_id=user_id)
+
+    return [log_recipe, get_all_nutrition_logs, get_nutrition_log_by_meal, get_weekly_nutrition]
 
 
 def _make_recipe_tools(user_id: str):
